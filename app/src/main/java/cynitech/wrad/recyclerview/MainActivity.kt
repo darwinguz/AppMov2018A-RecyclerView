@@ -29,5 +29,6 @@ class MainActivity : AppCompatActivity() {
             adapter = viewAdapter
 
         }
+
     }
 }

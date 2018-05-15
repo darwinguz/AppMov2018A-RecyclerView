@@ -10,7 +10,7 @@ class Usuario constructor(var cedula: String,
                           var like: Boolean) {
 
     override fun toString(): String {
-        return "$nombre $apellido"
+        return "$cedula $nombre $apellido $descripcion $fechaNacimiento $like"
     }
 }
 
