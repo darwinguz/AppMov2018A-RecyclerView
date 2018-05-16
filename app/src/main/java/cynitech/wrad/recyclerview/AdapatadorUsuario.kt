@@ -1,9 +1,13 @@
 package cynitech.wrad.recyclerview
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,32 +46,40 @@ class AdapatadorUsuario(private val usuarios: ArrayList<Usuario>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        val context = this
 
         holder.cedula.text = usuarios[position].cedula
         holder.nombre.text = usuarios[position].nombre
         holder.apellido.text = usuarios[position].apellido
-        holder.btnLike.text = if (usuarios[position].like) "Unlike" else "Like"
+        holder.btnLike.text = if (usuarios[position].like) "No like" else "Like"
+        holder.btnLike.setBackgroundColor(if (usuarios[position].like) Color.YELLOW else Color.BLUE)
+
         holder.btnLike.setOnClickListener(View.OnClickListener {
+            //FIXME NO FUNCA EL COLOR DESDE R.color.*
             if (!usuarios[position].like) {
-                holder.btnLike.text = "Unlike"
-                holder.btnLike.setBackgroundColor(R.color.colorLike)
+                holder.btnLike.text = "No like"
+                //holder.btnLike.setBackgroundColor(R.color.colorUnlike)
+                holder.btnLike.setBackgroundColor(Color.YELLOW)
             } else {
                 holder.btnLike.text = "Like"
-                holder.btnLike.setBackgroundColor(R.color.colorUnlike)
+                //holder.btnLike.setBackgroundColor(R.color.colorLike)
+                holder.btnLike.setBackgroundColor(Color.BLUE)
             }
             usuarios[position].like = !usuarios[position].like
         })
 
-        holder.btnDetail.setOnClickListener(View.OnClickListener {
-            irAActividadInfoUsuario()
-        })
+        holder.btnDetail.setOnClickListener { v ->
+            irAActividadInfoUsuario(v.context, usuarios[position])
+        }
 
     }
 
-    fun irAActividadInfoUsuario() {
-//        val intent = Intent(this, InfoUsuarioActivity::class.java)
-//        intent.putExtra("nombre", "Adrian Eguez")
-//        startActivity(intent)
+    fun irAActividadInfoUsuario(context: Context, usuarioSelected: Usuario) {
+        val intent = Intent(context, InfoUsuarioActivity::class.java)
+        intent.putExtra("usuario-intent", usuarioSelected)
+        Log.e("VERBOSE", "USUARIO ENVIADO: $usuarioSelected ")
+
+        startActivity(context, intent, null)
     }
 
 
